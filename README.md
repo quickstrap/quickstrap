@@ -60,3 +60,18 @@ quickstrap frameworks:silex
 ## extensions [TODO]
 But wait, there's more! QuickStrap supports extensions. You can create a custom quickstraps of your own and make them available
 with the quickstrap command.
+
+### extension installation
+Follow our extension implementation guidelines and developers will be able to do the following:
+
+```
+composer global require your/quickstrap-extension
+quickstrap register your/quickstrap-ci-extension
+```
+Now when you run quickstrap list you will see your extension available
+```
+quickstrap list
+> ...
+> ci:travis-ci
+> ci:your-custom-extension
+```
