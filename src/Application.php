@@ -3,7 +3,6 @@
 
 namespace QuickStrap;
 
-use Composer\Command\CreateProjectCommand;
 use Composer\Command\InitCommand;
 use Composer\Command\RequireCommand;
 use QuickStrap\Commands\TestSuites\PhpUnitCommand;
