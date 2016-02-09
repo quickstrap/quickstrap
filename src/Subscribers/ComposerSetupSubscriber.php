@@ -72,7 +72,6 @@ class ComposerSetupSubscriber implements EventSubscriberInterface
         $application->add($command);
         $application->setAutoExit(false);
 
-
         if ($application->run($input, $event->getOutput()) !== 0) {
             $event->getOutput()->writeln("Composer initialization failed.");
             $event->getOutput()->writeln("Please initialize a composer package manually before trying again.");
@@ -80,6 +79,5 @@ class ComposerSetupSubscriber implements EventSubscriberInterface
             $event->disableCommand();
             $event->stopPropagation();
         }
-        $event->enableCommand();
     }
 }

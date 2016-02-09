@@ -8,6 +8,7 @@ use Composer\Command\InitCommand;
 use Composer\Command\RequireCommand;
 use QuickStrap\Commands\TestSuites\PhpUnitCommand;
 use QuickStrap\Subscribers\ComposerSetupSubscriber;
+use QuickStrap\Subscribers\CwdSubscriber;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -31,7 +32,8 @@ class Application extends SymfonyApplication
         parent::__construct('quickstrap', '1.0');
 
         $this->eventDispatcher = new EventDispatcher();
-        $this->eventDispatcher->addSubscriber(new ComposerSetupSubscriber());
+        $this->eventDispatcher->addSubscriber(new ComposerSetupSubscriber);
+        $this->eventDispatcher->addSubscriber(new CwdSubscriber);
 
         $this->setDispatcher($this->eventDispatcher);
 
@@ -39,7 +41,7 @@ class Application extends SymfonyApplication
             new InputOption('project-path',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'The path to the project [defaults to current working dir]',
+                'The path to the project',
                 getcwd())
         );
     }
