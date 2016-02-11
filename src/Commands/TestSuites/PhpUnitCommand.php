@@ -4,6 +4,7 @@
 namespace QuickStrap\Commands\TestSuites;
 
 
+use QuickStrap\Commands\TestSuites\PhpUnit\ConfigurationFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,6 +43,7 @@ class PhpUnitCommand extends Command
      */
     private function installPhpUnit(InputInterface $input, OutputInterface $output, QuestionHelper $helper)
     {
+        // TODO this doesnt work, use composer to check for package
         if(class_exists('\PHPUnit_Framework_TestCase')) {
             $output->writeln("PHPUnit detected, skipping installation.");
             return 0;
@@ -67,49 +69,23 @@ class PhpUnitCommand extends Command
 
     private function bootstrapPhpUnit(InputInterface $input, OutputInterface $output, QuestionHelper $helper)
     {
-        $question = new Question('What relative path should test files be created in? [tests/unit]: ', 'tests/unit');
-        $testFolder = ltrim($helper->ask($input, $output, $question), DIRECTORY_SEPARATOR);
-
-        $path = sprintf("%s%s%s", getcwd(), DIRECTORY_SEPARATOR, $testFolder);
-        if(file_exists($path)) {
-            if(! $helper->ask($input,
-                $output,
-                new ConfirmationQuestion(sprintf("%s already exists, are you sure you want to continue?", $path))) ) {
-                return 0;
-            }
-        } else {
-            mkdir($path, 0777, true);
-        }
-
-        $output->writeln(sprintf("Configuring test folder to %s", $testFolder));
-
-$xml = <<<XML
-<phpunit
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.2/phpunit.xsd"
-     bootstrap="vendor/autoload.php">
-    <testsuites>
-      <testsuite name="unit">
-        <directory>$testFolder</directory>
-      </testsuite>
-    </testsuites>
-</phpunit>
-XML;
-
         $configPath = sprintf("%s%s%s", getcwd(), DIRECTORY_SEPARATOR, 'phpunit.xml');
         if(file_exists($configPath)) {
             if(! $helper->ask($input,
                 $output,
                 new ConfirmationQuestion(
-                    sprintf("%s already exists, do you want to overwrite it? [Y|n]: ", $configPath))) ) {
+                    sprintf("%s already exists, do you want to overwrite it? [yes]: ", $configPath))) ) {
                 return 0;
             }
             unlink($configPath);
         }
 
-        file_put_contents($configPath, $xml);
+        $factory = new ConfigurationFactory();
+        $phpUnitXml = $factory->create($input, $output, $helper);
+
+        file_put_contents($configPath, $phpUnitXml);
         $output->writeln(sprintf("Wrote phpunit config to %s", $configPath));
-        $output->writeln("You may now run tests by executing vending/bin/phpunit");
+        $output->writeln("You may now run tests by executing `vending/bin/phpunit`");
         return 0;
     }
 
