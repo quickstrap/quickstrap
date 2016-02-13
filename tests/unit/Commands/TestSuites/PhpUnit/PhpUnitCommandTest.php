@@ -52,11 +52,11 @@ class PhpUnitCommandTest extends \PHPUnit_Framework_TestCase
             ->makePartial();
 
         $root = vfsStream::setup('projectDir');
-        $this->configPath = $root->url() . '/phpunit.xml';
+        $this->configPath = $root->url() . '/phpunit.xml.dist';
 
         $this->pathMock->expects(static::any())
             ->method('getPath')
-            ->with('phpunit.xml')
+            ->with('phpunit.xml.dist')
             ->willReturn($this->configPath);
 
         $this->factoryMock = static::getMockBuilder(ConfigurationFactory::class)

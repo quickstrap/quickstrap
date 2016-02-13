@@ -90,7 +90,7 @@ class PhpUnitCommand extends Command
     {
         /** @var PathHelper $pathHelper */
         $pathHelper = $this->getHelper('path');
-        $configPath = $pathHelper->getPath('phpunit.xml');
+        $configPath = $pathHelper->getPath('phpunit.xml.dist');
         if(file_exists($configPath)) {
             if(! $questionHelper->ask($input,
                 $output,
