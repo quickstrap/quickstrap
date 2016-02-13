@@ -5,6 +5,7 @@ namespace QuickStrap\Subscribers;
 
 use Composer\Command\InitCommand;
 use Composer\IO\ConsoleIO;
+use QuickStrap\Helpers\Composer\InitHelper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -43,36 +44,24 @@ class ComposerSetupSubscriber implements EventSubscriberInterface
 
     public function onCommand(ConsoleCommandEvent $event)
     {
-        $project_path = $event->getInput()->getOption('project-path');
-        $composer_json_path = sprintf("%s%s%s", $project_path, DIRECTORY_SEPARATOR, 'composer.json');
+        $composer_json_path = 'composer.json';
         if (file_exists($composer_json_path)) {
             return;
         }
 
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $event->getCommand()->getHelper('question');
-        $question = new ConfirmationQuestion('Composer has not been initialized, initialize composer now? ', true);
+        $question = new ConfirmationQuestion('Composer has not been initialized, initialize composer now? [yes]: ', true);
+
         if(! $questionHelper->ask($event->getInput(), $event->getOutput(), $question)) {
             $event->getOutput()->writeln('Skipping composer init, if the command fails then you should try initializing composer.');
             return;
         }
 
+        /** @var InitHelper $initHelper */
+        $initHelper = $event->getCommand()->getHelper('composer init');
 
-
-        $input = new ArgvInput([
-            'composer', 'init'
-        ]);
-        $input->setInteractive(true);
-
-        /** @var InitCommand $command */
-        $command = $event->getCommand()->getApplication()->find('init');
-        $command->setIO(new ConsoleIO($input, $event->getOutput(), $event->getCommand()->getHelperSet()));
-
-        $application = new Application();
-        $application->add($command);
-        $application->setAutoExit(false);
-
-        if ($application->run($input, $event->getOutput()) !== 0) {
+        if ($initHelper->initComposer($event->getOutput())) {
             $event->getOutput()->writeln("Composer initialization failed.");
             $event->getOutput()->writeln("Please initialize a composer package manually before trying again.");
 

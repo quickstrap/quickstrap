@@ -5,13 +5,14 @@ namespace QuickStrap\Commands\TestSuites;
 
 
 use QuickStrap\Commands\TestSuites\PhpUnit\ConfigurationFactory;
+use QuickStrap\Helpers\Composer\PackageHelper;
+use QuickStrap\Helpers\Composer\RequireHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Process\Process;
 
 class PhpUnitCommand extends Command
 {
@@ -25,14 +26,14 @@ class PhpUnitCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $helper = $this->getHelper('question');
+        $questionHelper = $this->getHelper('question');
 
-        $status = $this->installPhpUnit($input, $output, $helper);
+        $status = $this->installPhpUnit($input, $output, $questionHelper);
         if($status) {
             return $status;
         }
 
-        return $this->bootstrapPhpUnit($input, $output, $helper);
+        return $this->bootstrapPhpUnit($input, $output, $questionHelper);
     }
 
     /**
@@ -41,30 +42,33 @@ class PhpUnitCommand extends Command
      * @param QuestionHelper $helper
      * @return int|null
      */
-    private function installPhpUnit(InputInterface $input, OutputInterface $output, QuestionHelper $helper)
+    private function installPhpUnit(
+        InputInterface $input,
+        OutputInterface $output,
+        QuestionHelper $helper
+    )
     {
-        // TODO this doesnt work, use composer to check for package
-        if(class_exists('\PHPUnit_Framework_TestCase')) {
-            $output->writeln("PHPUnit detected, skipping installation.");
+        /** @var PackageHelper $packageHelper */
+        $packageHelper = $this->getHelper('package');
+        if ($packageHelper->hasPackage('phpunit/phpunit', null, $input, $output)) {
+            $version = $packageHelper->getPackageVersion('phpunit/phpunit', $input, $output);
+            $output->writeln(sprintf("Found %s:%s, skipping PHPUnit installation", 'phpunit/phpunit', $version));
             return 0;
         }
+
+        /** @var RequireHelper $requireHelper */
+        $requireHelper = $this->getHelper('composer require');
 
         $question = new Question('What package version of phpunit do you want to install? [latest]: ', 'latest');
         $version = $helper->ask($input, $output, $question);
 
-        $command = sprintf("composer require --dev phpunit/phpunit%s", ($version == 'latest' ? '' : ':' . $version));
-        $process = new Process($command);
-        $process->setTimeout(300);
+        $status = $requireHelper->requirePackage(
+            $output,
+            'phpunit/phpunit',
+            ($version == 'latest' ? '' : ':' . $version),
+            true);
 
-        try {
-            $process->mustRun(function($type, $buffer) use($output) {
-                $output->write($buffer);
-            });
-            return 0;
-        } catch (\Exception $e) {
-            $output->write($e->getMessage());
-            return $process->getExitCode();
-        }
+        return $status;
     }
 
     private function bootstrapPhpUnit(InputInterface $input, OutputInterface $output, QuestionHelper $helper)
