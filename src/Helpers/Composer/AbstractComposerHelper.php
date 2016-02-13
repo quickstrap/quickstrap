@@ -26,45 +26,4 @@ abstract class AbstractComposerHelper extends Helper
 
         return $application->run($input, $output);
     }
-
-    public function initComposer(OutputInterface $output)
-    {
-        $input = new ArgvInput([
-            'composer', 'init'
-        ]);
-        $input->setInteractive(true);
-
-        /** @var InitCommand $command */
-        $command = $this->getHelperSet()->getCommand()->getApplication()->find('init');
-
-        return $this->execute($input, $output, $command);
-    }
-
-    public function requirePackage(OutputInterface $output, $package, $version = null, $dev = true)
-    {
-        $packageArg = sprintf("%s%s", $package, ($version != null ? ':'.$version : null));
-
-        $args = [
-            'composer', 'require'
-        ];
-
-        if ($dev) {
-            $args[] = '--dev';
-        }
-
-        $args[] = $packageArg;
-
-        $input = new ArgvInput($args);
-        $input->setInteractive(true);
-
-        /** @var RequireCommand $command */
-        $command = $this->getHelperSet()->getCommand()->getApplication()->find('require');
-        $command->setIO(new ConsoleIO($input, $output, $this->getHelperSet()));
-
-        $application = new ComposerApplication();
-        $application->add($command);
-        $application->setAutoExit(false);
-
-        return $application->run($input, $output);
-    }
 }
