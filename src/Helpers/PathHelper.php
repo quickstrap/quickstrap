@@ -8,7 +8,8 @@ use Symfony\Component\Console\Helper\Helper;
 
 class PathHelper extends Helper
 {
-
+    /** @var string */
+    private $projectPath;
     /**
      * Returns the canonical name of this helper.
      *
@@ -26,6 +27,20 @@ class PathHelper extends Helper
      */
     public function getPath($relativePath)
     {
-        return sprintf("%s%s%s", getcwd(), DIRECTORY_SEPARATOR, $relativePath);
+        return sprintf("%s%s%s", $this->getProjectPath(), DIRECTORY_SEPARATOR, $relativePath);
+    }
+
+    /**
+     * @internal this method should only be used by CwdSubscriber
+     * @param $absolutePathToProject
+     */
+    public function setProjectPath($absolutePathToProject)
+    {
+        $this->projectPath = $absolutePathToProject;
+    }
+
+    protected function getProjectPath()
+    {
+        return $this->projectPath ?: getcwd();
     }
 }

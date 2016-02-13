@@ -4,6 +4,7 @@
 namespace QuickStrap\Subscribers;
 
 
+use QuickStrap\Helpers\PathHelper;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
@@ -41,6 +42,9 @@ class CwdSubscriber implements EventSubscriberInterface
 
     public function onCommand(ConsoleCommandEvent $event)
     {
+        /** @var PathHelper $path */
+        $path = $event->getCommand()->getHelper('path');
+
         $this->old_working_dir = getcwd();
         $working_dir = $event->getInput()->getOption('project-path');
         $real_working_dir = realpath($working_dir);
