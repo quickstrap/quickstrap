@@ -1,3 +1,6 @@
+[![Code Climate](https://codeclimate.com/github/quickstrap/quickstrap/badges/gpa.svg)](https://codeclimate.com/github/quickstrap/quickstrap)
+[![Test Coverage](https://codeclimate.com/github/quickstrap/quickstrap/badges/coverage.svg)](https://codeclimate.com/github/quickstrap/quickstrap/coverage)
+
 # QuickStrap
 Quickly configure your project with test suites, continuous integrations and more.
 

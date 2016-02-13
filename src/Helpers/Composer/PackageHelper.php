@@ -47,8 +47,6 @@ class PackageHelper extends AbstractComposerHelper
             $constraint = $parser->parseConstraints($version);
         }
 
-
-        $matchedPackage = null;
         return $pool->whatProvides($name, $constraint);
     }
 

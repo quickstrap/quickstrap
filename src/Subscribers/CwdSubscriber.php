@@ -55,6 +55,8 @@ class CwdSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $path->setProjectPath($working_dir);
+
         $event->getOutput()->writeln(sprintf("Changing directory to %s", $working_dir));
         chdir($real_working_dir);
     }
