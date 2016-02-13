@@ -1,12 +1,12 @@
 <?php
 
 
-namespace QuickStrap\Commands\TestSuites;
+namespace QuickStrap\Commands\TestSuites\PhpUnit;
 
 
-use QuickStrap\Commands\TestSuites\PhpUnit\ConfigurationFactory;
 use QuickStrap\Helpers\Composer\PackageHelper;
 use QuickStrap\Helpers\Composer\RequireHelper;
+use QuickStrap\Helpers\PathHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +16,21 @@ use Symfony\Component\Console\Question\Question;
 
 class PhpUnitCommand extends Command
 {
+    /** @var  ConfigurationFactory */
+    private $configFactory;
+
+    /**
+     * PhpUnitCommand constructor.
+     * @param ConfigurationFactory $configFactory
+     */
+    public function __construct(ConfigurationFactory $configFactory = null)
+    {
+        parent::__construct();
+
+        $this->configFactory = $configFactory ?: new ConfigurationFactory();
+    }
+
+
     protected function configure()
     {
         parent::configure();
@@ -65,17 +80,19 @@ class PhpUnitCommand extends Command
         $status = $requireHelper->requirePackage(
             $output,
             'phpunit/phpunit',
-            ($version == 'latest' ? '' : ':' . $version),
+            ($version == 'latest' ? '' : $version),
             true);
 
         return $status;
     }
 
-    private function bootstrapPhpUnit(InputInterface $input, OutputInterface $output, QuestionHelper $helper)
+    private function bootstrapPhpUnit(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
-        $configPath = sprintf("%s%s%s", getcwd(), DIRECTORY_SEPARATOR, 'phpunit.xml');
+        /** @var PathHelper $pathHelper */
+        $pathHelper = $this->getHelper('path');
+        $configPath = $pathHelper->getPath('phpunit.xml');
         if(file_exists($configPath)) {
-            if(! $helper->ask($input,
+            if(! $questionHelper->ask($input,
                 $output,
                 new ConfirmationQuestion(
                     sprintf("%s already exists, do you want to overwrite it? [yes]: ", $configPath))) ) {
@@ -84,8 +101,8 @@ class PhpUnitCommand extends Command
             unlink($configPath);
         }
 
-        $factory = new ConfigurationFactory();
-        $phpUnitXml = $factory->create($input, $output, $helper);
+        $factory = $this->configFactory;
+        $phpUnitXml = $factory->create($input, $output, $questionHelper);
 
         file_put_contents($configPath, $phpUnitXml);
         $output->writeln(sprintf("Wrote phpunit config to %s", $configPath));

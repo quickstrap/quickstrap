@@ -6,10 +6,11 @@ namespace QuickStrap;
 use Composer\Command\InitCommand;
 use Composer\Command\RequireCommand;
 use Composer\Command\ShowCommand;
-use QuickStrap\Commands\TestSuites\PhpUnitCommand;
+use QuickStrap\Commands\TestSuites\PhpUnit\PhpUnitCommand;
 use QuickStrap\Helpers\Composer\InitHelper;
 use QuickStrap\Helpers\Composer\PackageHelper;
 use QuickStrap\Helpers\Composer\RequireHelper;
+use QuickStrap\Helpers\PathHelper;
 use QuickStrap\Subscribers\ComposerSetupSubscriber;
 use QuickStrap\Subscribers\CwdSubscriber;
 use Symfony\Component\Console\Application as SymfonyApplication;
@@ -73,6 +74,7 @@ class Application extends SymfonyApplication
         $helperSet->set(new InitHelper());
         $helperSet->set(new RequireHelper());
         $helperSet->set(new PackageHelper());
+        $helperSet->set(new PathHelper());
 
         return $helperSet;
     }
