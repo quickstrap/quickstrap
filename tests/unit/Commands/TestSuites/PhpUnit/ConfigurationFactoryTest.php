@@ -46,7 +46,7 @@ class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($this->mockInput, $this->mockOutput, Mockery::on(function(Question $questionArg) use ($question) {
                 return $questionArg->getQuestion() == $question;
             }))
-            ->andReturn($answer);
+            ->andReturn($answer, null);
     }
 
     /**
@@ -140,22 +140,160 @@ class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
                 "/phpunit[@convertErrorsToExceptions='false']",
                 1
             ],
+            'convert notices to exceptions on' => [
+                ['convert notices to exceptions? [yes]: ' => true],
+                "/phpunit[@convertNoticesToExceptions]",
+                0
+            ],
+            'convert notices to exceptions off' => [
+                ['convert notices to exceptions? [yes]: ' => false],
+                "/phpunit[@convertNoticesToExceptions='false']",
+                1
+            ],
+            'convert warnings to exceptions on' => [
+                ['convert warnings to exceptions? [yes]: ' => true],
+                "/phpunit[@convertWarningsToExceptions]",
+                0
+            ],
+            'convert warnings to exceptions off' => [
+                ['convert warnings to exceptions? [yes]: ' => false],
+                "/phpunit[@convertWarningsToExceptions='false']",
+                1
+            ],
+            'force @covers annotation off' => [
+                ['force @covers Annotation? [no]: ' => false],
+                "/phpunit[@forceCoversAnnotation]",
+                0
+            ],
+            'force @covers annotation on' => [
+                ['force @covers Annotation? [no]: ' => true],
+                "/phpunit[@forceCoversAnnotation='true']",
+                1
+            ],
+            'map test class name to covered class name off' => [
+                ['map test class name to covered class name? [no]: ' => false],
+                "/phpunit[@mapTestClassNameToCoveredClassName]",
+                0
+            ],
+            'map test class name to covered class name on' => [
+                ['map test class name to covered class name? [no]: ' => true],
+                "/phpunit[@mapTestClassNameToCoveredClassName='true']",
+                1
+            ],
+            'run tests in process isolation off' => [
+                ['run tests in process isolation? [no]: ' => false],
+                "/phpunit[@processIsolation]",
+                0
+            ],
+            'run tests in process isolation on' => [
+                ['run tests in process isolation? [no]: ' => true],
+                "/phpunit[@processIsolation='true']",
+                1
+            ],
+            'stop on error off' => [
+                ['stop on error? [no]: ' => false],
+                "/phpunit[@stopOnError]",
+                0
+            ],
+            'stop on error on' => [
+                ['stop on error? [no]: ' => true],
+                "/phpunit[@stopOnError='true']",
+                1
+            ],
+            'stop on failure off' => [
+                ['stop on failure? [no]: ' => false],
+                "/phpunit[@stopOnFailure]",
+                0
+            ],
+            'stop on failure on' => [
+                ['stop on failure? [no]: ' => true],
+                "/phpunit[@stopOnFailure='true']",
+                1
+            ],
+            'stop on incomplete off' => [
+                ['stop on incomplete? [no]: ' => false],
+                "/phpunit[@stopOnIncomplete]",
+                0
+            ],
+            'stop on incomplete on' => [
+                ['stop on incomplete? [no]: ' => true],
+                "/phpunit[@stopOnIncomplete='true']",
+                1
+            ],
+            'stop on skipped off' => [
+                ['stop on skipped? [no]: ' => false],
+                "/phpunit[@stopOnSkipped]",
+                0
+            ],
+            'stop on skipped on' => [
+                ['stop on skipped? [no]: ' => true],
+                "/phpunit[@stopOnSkipped='true']",
+                1
+            ],
+            'stop on risky off' => [
+                ['stop on risky? [no]: ' => false],
+                "/phpunit[@stopOnRisky]",
+                0
+            ],
+            'stop on risky on' => [
+                ['stop on risky? [no]: ' => true],
+                "/phpunit[@stopOnRisky='true']",
+                1
+            ],
+            'timeout for small tests default' => [
+                ['timeout for small tests (seconds)? [1]' => 1],
+                "/phpunit[@timeoutForSmallTests]",
+                0
+            ],
+            'timeout for small tests custom' => [
+                ['timeout for small tests (seconds)? [1]' => 10],
+                "/phpunit[@timeoutForSmallTests='10']",
+                1
+            ],
+            'timeout for medium tests default' => [
+                ['timeout for medium tests (seconds)? [10]' => 10],
+                "/phpunit[@timeoutForMediumTests]",
+                0
+            ],
+            'timeout for medium tests custom' => [
+                ['timeout for medium tests (seconds)? [10]' => 100],
+                "/phpunit[@timeoutForMediumTests='100']",
+                1
+            ],
+            'timeout for large tests default' => [
+                ['timeout for large tests (seconds)? [60]' => 60],
+                "/phpunit[@timeoutForLargeTests]",
+                0
+            ],
+            'timeout for large tests custom' => [
+                ['timeout for large tests (seconds)? [60]' => 100],
+                "/phpunit[@timeoutForLargeTests='100']",
+                1
+            ],
+            'verbose off' => [
+                ['verbose? [no]: ' => false],
+                "/phpunit[@verbose]",
+                0
+            ],
+            'verbose on' => [
+                ['verbose? [no]: ' => true],
+                "/phpunit[@verbose='true']",
+                1
+            ],
+            'no tests suites' => [
+                ['add test suite? [yes]: ' => false],
+                "/phpunit/testsuites",
+                0
+            ],
+            'with test suite' => [
+                [
+                    'add test suite? [yes]: ' => true,
+                    'name of test suite? [unit]: ' => 'my test suite',
+                    'relative path to test suite directory? [tests/unit]: ' => 'path/to/my/tests',
+                ],
+                "/phpunit/testsuites/testsuite[@name='my test suite']/directory[text()='path/to/my/tests']",
+                1
+            ],
         ];
-        /**
-         * convertNoticesToExceptions
-         * convertWarningsToExceptions
-         * forceCoversAnnotation
-         * mapTestClassNameToCoveredClassName
-         * processIsolation
-         * stopOnError
-         * stopOnFailure
-         * stopOnIncomplete
-         * stopOnSkipped
-         * stopOnRisky
-         * timeoutForSmallTests
-         * timeoutForMediumTests
-         * timeoutForLargeTests
-         * verbose
-         */
     }
 }
