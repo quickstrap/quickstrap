@@ -6,6 +6,7 @@ namespace QuickStrap;
 use Composer\Command\InitCommand;
 use Composer\Command\RequireCommand;
 use Composer\Command\ShowCommand;
+use QuickStrap\Commands\TestSuites\Behat\BehatCommand;
 use QuickStrap\Commands\TestSuites\PhpUnit\PhpUnitCommand;
 use QuickStrap\Helpers\Composer\InitHelper;
 use QuickStrap\Helpers\Composer\PackageHelper;
@@ -63,6 +64,7 @@ class Application extends SymfonyApplication
 
         // test suite commands
         $defaultCommands[] = new PhpUnitCommand();
+        $defaultCommands[] = new BehatCommand();
 
         return $defaultCommands;
     }
