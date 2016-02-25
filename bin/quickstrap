@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+if (version_compare('5.6.0', PHP_VERSION, '>')) {
+    fwrite(
+        STDERR,
+        'This version of QuickStrap requires PHP 5.6; using the latest version of PHP is highly recommended.' . PHP_EOL
+    );
+
+    die(1);
+}
+
+if (!ini_get('date.timezone')) {
+    ini_set('date.timezone', 'UTC');
+}
+
+ini_alter('memory_limit', -1);
+
+use QuickStrap\Application;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+
+
+$application = new Application();
+$application->run();
