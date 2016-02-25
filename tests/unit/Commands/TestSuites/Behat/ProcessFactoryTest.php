@@ -14,6 +14,6 @@ class ProcessFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ProcessFactory();
         $process = $factory->create();
         static::assertInstanceOf(Process::class, $process);
-        static::assertEquals('"vendor/bin/behat" "--init"', $process->getCommandLine());
+        static::assertEquals('vendor/bin/behat --init', str_replace(['"', "'"], '', $process->getCommandLine()));
     }
 }
