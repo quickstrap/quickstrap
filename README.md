@@ -22,7 +22,7 @@ This will install PHPUnit, and setup your test directory and phpunit.xml configu
 quickstrap testsuites:phpunit
 ```
 
-### QuickStrap-ing Behat [TODO]
+### QuickStrap-ing Behat
 This will install Behat, and setup your feature directory and behat.yml configuration for you.
 ```
 quickstrap testsuites:behat
