@@ -12,6 +12,7 @@ composer global require quickstrap/quickstrap
 ```
 
 Now, you can use QuickStrap in any of your new projects!
+_Note that your home composer bin folder should be added to your environment path_
 
 ## Usage
 
