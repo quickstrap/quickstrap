@@ -13,6 +13,16 @@ use Symfony\Component\Console\Question\Question;
 
 class BehatCommand extends Command
 {
+    /** @var  ProcessFactory */
+    private $processFactory;
+
+    public function __construct(ProcessFactory $processFactory = null)
+    {
+        parent::__construct();
+        $this->processFactory = $processFactory ?: new ProcessFactory();
+    }
+
+
     protected function configure()
     {
         parent::configure();
@@ -46,6 +56,19 @@ class BehatCommand extends Command
             ($version == 'latest' ? '' : $version),
             true);
 
-        return $status;
+        if ($status !== 0) {
+            return $status;
+        }
+
+        $process = $this->processFactory->create();
+        try {
+            $process->mustRun(function($type, $buffer) use($output) {
+                $output->write($buffer);
+            });
+            return 0;
+        } catch (\Exception $e) {
+            $output->write($e->getMessage());
+            return $process->getExitCode();
+        }
     }
 }
