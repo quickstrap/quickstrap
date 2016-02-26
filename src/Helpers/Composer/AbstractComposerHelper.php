@@ -4,7 +4,7 @@
 namespace QuickStrap\Helpers\Composer;
 
 
-use Composer\Command\Command;
+use Composer\Command\BaseCommand as Command;
 use Composer\Console\Application as ComposerApplication;
 use Composer\IO\ConsoleIO;
 use Symfony\Component\Console\Helper\Helper;
