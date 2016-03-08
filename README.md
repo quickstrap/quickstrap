@@ -29,6 +29,13 @@ This will install Behat, and setup your feature directory and behat.yml configur
 quickstrap testsuites:behat
 ```
 
+### QuickStrap-ing Code Sniffer
+This will install Code Sniffer.
+```
+quickstrap analyzers:codesniffer
+```
+
+
 ### QuickStrap-ing TravisCI [TODO]
 This will generate a .travis-ci.yml configuration for you. If you've got phpunit or behat installed it will automatically
 add them to the configuration.
