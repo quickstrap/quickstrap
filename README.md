@@ -1,6 +1,8 @@
 [![Stories in Ready](https://badge.waffle.io/quickstrap/quickstrap.png?label=ready&title=Ready)](https://waffle.io/quickstrap/quickstrap)
 [![Code Climate](https://codeclimate.com/github/quickstrap/quickstrap/badges/gpa.svg)](https://codeclimate.com/github/quickstrap/quickstrap)
 [![Test Coverage](https://codeclimate.com/github/quickstrap/quickstrap/badges/coverage.svg)](https://codeclimate.com/github/quickstrap/quickstrap/coverage)
+[![Coverage Status](https://coveralls.io/repos/github/quickstrap/quickstrap/badge.svg?branch=master)](https://coveralls.io/github/quickstrap/quickstrap?branch=master)
+
 
 # QuickStrap
 Quickly configure your project with test suites, continuous integrations and more.
