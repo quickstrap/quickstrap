@@ -13,3 +13,6 @@ before_script:
 script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - CODECLIMATE_REPO_TOKEN=ac726f3a4c2197e7fff2a66ec5aa11941634f99c43b259548334d416fd883535  ./vendor/bin/test-reporter
+
+after_success:
+  - travis_retry php vendor/bin/coveralls
