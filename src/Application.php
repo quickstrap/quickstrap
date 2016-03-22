@@ -6,6 +6,7 @@ namespace QuickStrap;
 use Composer\Command\InitCommand;
 use Composer\Command\RequireCommand;
 use Composer\Command\ShowCommand;
+use QuickStrap\Commands\ContinuousIntegration\TravisCi\TravisCiCommandFactory;
 use QuickStrap\Commands\TestSuites\Behat\BehatCommand;
 use QuickStrap\Commands\TestSuites\PhpUnit\PhpUnitCommand;
 use QuickStrap\Helpers\Composer\InitHelper;
@@ -65,6 +66,9 @@ class Application extends SymfonyApplication
         // test suite commands
         $defaultCommands[] = new PhpUnitCommand();
         $defaultCommands[] = new BehatCommand();
+        
+        // travis ci command
+        $defaultCommands[] = TravisCiCommandFactory::createCommand($this->getDefaultHelperSet());
 
         return $defaultCommands;
     }
