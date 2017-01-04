@@ -17,24 +17,24 @@
         "composer/composer": "dev-master",
         "symfony/event-dispatcher": "^3.0",
         "servo/fluidxml": "1.13",
-        "codeclimate/php-test-reporter": "^0.3.0"
+        "codeclimate/php-test-reporter": "^0.3.0",
+        "symfony/http-kernel": "^3.2",
+        "symfony/yaml": "~3.2",
+        "symfony/dependency-injection": "^3.2"
     },
     "autoload": {
         "psr-4": {
-            "QuickStrap\\": "src"
+            "Quickstrap\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "QuickStrapUnit\\": "tests/unit"
+            "QuickstrapUnit\\": "tests/unit"
         }
     },
     "require-dev": {
         "phpunit/phpunit": "^5.2",
         "mockery/mockery": "^0.9.4",
         "mikey179/vfsStream": "^1.6"
-    },
-    "bin": [
-        "bin/quickstrap"
-    ]
+    }
 }
