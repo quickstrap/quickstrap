@@ -8,6 +8,7 @@
 At a Terminal prompt paste the following:
 
 [TODO] _This doesn't work yet_
+
 ```
 php -r "copy('https://raw.githubusercontent.com/quickstrap/installer/master/src/setup.php', 'quickstrap-setup.php');"
 php quickstrap-setup.php
@@ -46,38 +47,45 @@ Generated ./phpunit.xml.dist
 
 ## There are many helpers
 This will install Behat, and setup your feature directory and behat.yml configuration for you.
+
 ```
 quickstrap testsuites:behat
 ```
 ------
 This will install Code Sniffer.
+
 ```
 quickstrap analyzers:codesniffer
 ```
 ------
 This will generate a .travis-ci.yml configuration for you. If you've got phpunit or behat installed it will automatically
 add them to the configuration. [TODO]
+
 ```
 quickstrap ci:travis-ci
 ```
 ------
 This will generate a .gitlab-ci.yml configuration for you. If you've got phpunit or behat installed it will automatically
 add them to the configuration. [TODO]
+
 ```
 quickstrap ci:gitlab-ci
 ```
 ------
 This will setup a zend framework apigility skeleton project for you. [TODO]
+
 ```
 quickstrap frameworks:apigility
 ```
 ------
 This will setup a slimframework skeleton project for you. [TODO]
+
 ```
 quickstrap frameworks:slim
 ```
 ------
 This will setup a silex skeleton project for you. [TODO]
+
 ```
 quickstrap frameworks:silex
 ```
@@ -94,6 +102,7 @@ And publish your package as a git repository somewhere (github/bitbucket/gitlab 
 
 ------
 Install new helpers 
+
 ```
 quickstrap install https://github.com/vendor/package-name.git
 ```
