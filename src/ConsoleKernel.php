@@ -9,13 +9,6 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class ConsoleKernel extends Kernel
 {
-    public function __construct()
-    {
-        $this->rootDir = __DIR__ . '/package/';
-        parent::__construct('dev',true);
-    }
-
-
     /**
      * Returns an array of bundles to register.
      *
