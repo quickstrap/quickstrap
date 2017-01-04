@@ -7,6 +7,7 @@
 ## Install Quickstrap
 At a Terminal prompt paste the following:
 
+[TODO] _This doesn't work yet_
 ```
 php -r "copy('https://raw.githubusercontent.com/quickstrap/installer/master/src/setup.php', 'quickstrap-setup.php');"
 php quickstrap-setup.php
